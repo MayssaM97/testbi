@@ -86,7 +86,7 @@ var PosDashboard = AbstractAction.extend({
     },
       render_graphs: function(){
         var self = this;
-         self.render_top_customer_graph();
+         self.render_ca_pdv_graph();
          self.render_top_product_graph();
          self.render_product_category_graph();
          self.render_product_category2_graph();
@@ -232,9 +232,9 @@ var PosDashboard = AbstractAction.extend({
                     on_reverse_breadcrumb: self.on_reverse_breadcrumb,
                 };
                 self.do_action({
-                    name: _t("Quantity Order"),
+                    name: _t("Total Order"),
                     type: 'ir.actions.act_window',
-                    res_model: 'pos.order.line',
+                    res_model: 'pos.order',
                     view_mode: 'tree,form,calendar',
                     view_type: 'form',
                     views: [[false, 'list'],[false, 'form']],
@@ -347,17 +347,18 @@ var PosDashboard = AbstractAction.extend({
         },
 
 
-     render_top_customer_graph:function(){
+     render_ca_pdv_graph:function(){
        var self = this
-        var ctx = self.$(".top_customer");
+        var ctx = self.$(".ca_pdv");
             rpc.query({
                 model: "pos.order",
-                method: "get_the_top_customer",
+                method: "ca_pdv",
             }).then(function (arrays) {
 
 
           var data = {
             labels: arrays[1],
+
             datasets: [
               {
                 label: "",
@@ -388,15 +389,15 @@ var PosDashboard = AbstractAction.extend({
             title: {
               display: true,
               position: "top",
-              text: " Top Customer",
-              fontSize: 18,
+              text: " Chiffre d'affaires par point de vente",
+              fontSize: 12,
               fontColor: "#111"
             },
             legend: {
               display: true,
               position: "bottom",
               labels: {
-                fontColor: "#333",
+                fontColor: "#789",
                 fontSize: 16
               }
             },
@@ -411,7 +412,7 @@ var PosDashboard = AbstractAction.extend({
 
           //create Chart class object
           var chart = new Chart(ctx, {
-            type: "pie",
+            type: "bar",
             data: data,
             options: options
           });

@@ -133,7 +133,7 @@
                             <h4 class="mb-0">
                             </h4>
                         </div>
-                        <canvas class="top_customer" width="200" height="120"/>
+                        <canvas class="ca_pdv" width="200" height="120"/>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-6  selling_product_graph_view">

@@ -166,24 +166,37 @@ class PosDashboard(models.Model):
         }
 
     @api.model
-    def get_the_top_customer(self, ):
-        company_id = self.env.company.id
-        query = '''select res_partner.name as customer,pos_order.partner_id,sum(pos_order.amount_paid) as amount_total from pos_order 
-        inner join res_partner on res_partner.id = pos_order.partner_id where pos_order.company_id = ''' + str(
-            company_id) + ''' GROUP BY pos_order.partner_id,
-        res_partner.name  ORDER BY amount_total  DESC LIMIT 10;'''
+    def ca_pdv(self, ):
+
+        query = '''SELECT 
+        DISTINCT(pg.name)as pv,
+
+        sum(ol.price_subtotal) as prix_tot_ht
+        
+        from pos_order_line ol 
+        LEFT JOIN pos_order po on po.id = ol.order_id
+        LEFT JOIN pos_session ps on ps.id = po.session_id
+        LEFT JOIN pos_config pg on pg.id = ps.config_id
+        
+        GROUP BY pv
+         '''
+
         self._cr.execute(query)
         docs = self._cr.dictfetchall()
-        print(docs)
 
-        order = []
+        prix_tot = []
         for record in docs:
-            order.append(record.get('amount_total'))
-        day = []
+            prix_tot.append(record.get('prix_tot_ht'))
+        final = sum(prix_tot)
+        print("heyy",final)
+        pdv=[]
         for record in docs:
-            day.append(record.get('customer'))
-        final = [order, day]
-        return final
+            pdv.append(record.get('pv'))
+
+        print("point de vente",pdv)
+        final2=[prix_tot,pdv]
+        return final2
+
 
     @api.model
     def get_the_top_products(self):

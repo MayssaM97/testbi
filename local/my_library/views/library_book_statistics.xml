@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='library_book_rent_statistics_action' model='ir.actions.act_window'>
+        <field name="name">Rent statistics</field>
+        <field name="res_model">library.book.rent.statistics</field>
+        <field name="view_mode">graph,pivot</field>
+    </record>
+
+    <menuitem name="Statistics" id="library_book_rent_statistics_menu" parent="library_base_menu" action="library_book_rent_statistics_action"/>
+
+    <!-- Graph View -->
+    <record id="library_book_rent_view_pivot" model="ir.ui.view">
+        <field name="name">Library Rent Statistics</field>
+        <field name="model">library.book.rent.statistics</field>
+        <field name="arch" type="xml">
+            <pivot string="Invoices Analysis" >
+                <field name="book_id" />
+                <field name="rent_count"/>
+                <field name="book_name"/>
+                <field name="average_occupation" />
+            </pivot>
+        </field>
+    </record>
+
+</odoo>
